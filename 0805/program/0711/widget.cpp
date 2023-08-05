@@ -6,6 +6,7 @@ Widget::Widget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Widget)
 {
+    hThread=0;
     ui->setupUi(this);
 
     connect(ui->pushButton,
@@ -14,6 +15,7 @@ Widget::Widget(QWidget *parent)
             &Widget::on_pushButton_clicked);
 
     connect(this,&Widget::sendI,this,&Widget::receiveI);
+
 
 }
 
@@ -25,14 +27,17 @@ Widget::~Widget()
 DWORD WINAPI ThreadProc(_In_ LPVOID lpParameter)
 {
     Widget *pThis=(Widget*)lpParameter;
+    pThis->threadFlag=true;
+    while(pThis->threadFlag){
+        for(int i=0;i<=100;i++){
 
-    for(int i=0;i<=100;i++){
-
-            emit pThis->sendI(i);
-        Sleep(100);
+                emit pThis->sendI(i);
+            Sleep(100);
 
 
-        }
+            }
+    }
+
 }
 
 void Widget::receiveI(int i)
@@ -42,11 +47,37 @@ void Widget::receiveI(int i)
 
 void Widget::on_pushButton_clicked()
 {
-    CreateThread(0,
-                 0,
-                 &ThreadProc,
-                 this,
-                 0,
-                 0);
+
+    if(!hThread){
+       hThread= CreateThread(0,
+                         0,
+                         &ThreadProc,
+                         this,
+                         0,
+                         0);
+    }
+    else
+        ResumeThread(hThread);
+
+
+
 }
 
+
+
+void Widget::on_pushButton_2_clicked()
+{
+    SuspendThread(hThread);
+}
+
+void Widget::on_pushButton_3_clicked()
+{
+    threadFlag=false;
+    if(WAIT_TIMEOUT==WaitForSingleObject(hThread,200))
+        TerminateThread(hThread,-1);
+    if(hThread){
+        CloseHandle(hThread);
+        hThread=0;
+    }
+    ui->progressBar->setValue(0);
+}

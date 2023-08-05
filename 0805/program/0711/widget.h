@@ -15,12 +15,22 @@ class Widget : public QWidget
 public:
     Widget(QWidget *parent = nullptr);
     ~Widget();
+    bool threadFlag;
+
 
 
 private:
     Ui::Widget *ui;
+    HANDLE hThread;
+
+
 private slots:
     void on_pushButton_clicked();
+
+
+    void on_pushButton_2_clicked();
+
+    void on_pushButton_3_clicked();
 
 public slots:
     void receiveI(int i);
