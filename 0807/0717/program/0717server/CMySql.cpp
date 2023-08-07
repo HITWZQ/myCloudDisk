@@ -1,6 +1,5 @@
 ﻿#include "CMySql.h"
 
-
 CMySql::CMySql(void)
 {
    // m_pDataBase = new QSqlDatabase;
@@ -82,5 +81,7 @@ bool CMySql::SelectMySql(const char* szSql,int nColumn,list<string>& lstStr)
 
     return true;
  }
+
+
 
 
