@@ -34,6 +34,7 @@
 
 #define _uploadfileinfo_normal 0
 #define _uploadfileinfo_success 1
+
 struct STRU_REGISTER_RQ{
     char m_ntype;
     long long m_tel;
@@ -93,9 +94,5 @@ struct STRU_UPLOADFILEINCONTENT_RQ{
     int m_szFileNum;
 
 };
-
-
-
-
 
 #endif // PACKDEF_H

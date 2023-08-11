@@ -1,2 +1,1 @@
-SELECT * FROM 0713test.test;
-SELECT * FROM student;
+SELECT * FROM 0717disk.user_file;
